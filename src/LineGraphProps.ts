@@ -101,6 +101,22 @@ export type AnimatedLineGraphProps = BaseLineGraphProps & {
   SelectionDot?: React.ComponentType<SelectionDotProps> | null
 
   /**
+   * Custom SVG Elements
+   */
+  customElements?: Array<{
+    date: Date
+    component: React.ComponentType<{
+      color: BaseLineGraphProps['color']
+      // lineThickness: BaseLineGraphProps['lineThickness']
+      coords?: SharedValue<{cx: number, cy: number}[]>
+      index: number
+      width: number
+      height: number
+      onPress?: () => void
+    }>
+  }> | null
+
+  /**
    * The element that gets rendered above the Graph (usually the "max" point/value of the Graph)
    */
   TopAxisLabel?: () => React.ReactElement | null
