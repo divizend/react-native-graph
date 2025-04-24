@@ -71,6 +71,7 @@ export function AnimatedLineGraph({
   verticalPadding = lineThickness,
   TopAxisLabel,
   BottomAxisLabel,
+  customElements,
   ...props
 }: AnimatedLineGraphProps): React.ReactElement {
   const [width, setWidth] = useState(0)
@@ -175,6 +176,31 @@ export function AnimatedLineGraph({
   const indicatorPulseColor = useMemo(() => hexToRgba(color, 0.4), [color])
 
   const shouldFillGradient = gradientFillColors != null
+
+  const customCoords = useSharedValue<
+    {
+      cx: number
+      cy: number
+    }[]
+  >([])
+
+  const setCustomCoords = useCallback(() => {
+    customCoords.value = (customElements ?? []).map((element) => {
+      const x =
+        getXInRange(drawingWidth, element.date, pathRange.x) + horizontalPadding
+      const y = getYForX(commands.value, x) || 0
+
+      return { cx: x, cy: y }
+    })
+  }, [customElements, drawingWidth, horizontalPadding, pathRange.x])
+
+  useAnimatedReaction(
+    () => commands.value,
+    () => {
+      runOnJS(setCustomCoords)()
+    },
+    [commands, customElements, drawingWidth, horizontalPadding, pathRange.x]
+  )
 
   useEffect(() => {
     if (height < 1 || width < 1) {
@@ -465,6 +491,18 @@ export function AnimatedLineGraph({
 
           {/* Actual Skia Graph */}
           <View style={styles.container} onLayout={onLayout}>
+            {customElements?.map((element, index) => {
+              return (
+                <element.component
+                  key={index}
+                  color={color}
+                  coords={customCoords}
+                  index={index}
+                  width={width}
+                  height={height}
+                />
+              )
+            })}
             {/* Fix for react-native-skia's incorrect type declarations */}
             <Canvas style={styles.svg}>
               <Group>
@@ -558,6 +596,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    position: 'relative',
   },
   axisRow: {
     height: 17,
