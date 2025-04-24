@@ -107,8 +107,7 @@ export type AnimatedLineGraphProps = BaseLineGraphProps & {
     date: Date
     component: React.ComponentType<{
       color: BaseLineGraphProps['color']
-      // lineThickness: BaseLineGraphProps['lineThickness']
-      coords?: SharedValue<{cx: number, cy: number}[]>
+      coords?: SharedValue<{ cx: number; cy: number }[]>
       index: number
       width: number
       height: number
