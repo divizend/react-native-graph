@@ -1,6 +1,6 @@
 {
   "name": "@divizend/react-native-graph",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "📈 Beautiful, high-performance Graphs and Charts for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
