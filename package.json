@@ -52,7 +52,7 @@
   },
   "homepage": "https://github.com/margelo/react-native-graph#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://npm.pkg.github.com/"
   },
   "devDependencies": {
     "@react-native-community/eslint-config": "^2.0.0",
